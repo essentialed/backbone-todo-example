@@ -11,12 +11,12 @@ var TaskView = Backbone.View.extend({
         'change .toggle-state': 'toggle_state',
         'click .task-edit': 'edit',
         'click .task-save': 'save',
-        'click .task-delete': 'delete'
+        'click .task-delete': 'remove'
     },
 
     initialize: function(){
         console.info('TaskView.init =>', this.model.get('text'));
-        
+
         // make sure the model has a reference to this view.
         // if the model was already displayed, remove it.
         // not sure if removing previous view is necessary
@@ -24,39 +24,38 @@ var TaskView = Backbone.View.extend({
         if(this.model.TaskView) {
             this.model.TaskView.remove();
         }
-        
+
         this.model.TaskView = this;
-        
+
         return this;
     },
-    
-    
+
     edit: function(e){
         this.$('.task').addClass('editing');
-        
+
         this.$('.task-edit-text').text( this.model.get('text') ).focus();
-        
+
         return this;
     },
-    
+
     save: function(e){
-        
+
         var text = this.$('.task-edit-text').val();
-        
+
         this.model.save({
             'text': text
         });
-        
+
         this.$('.task').removeClass('editing');
 
     },
-    
-    delete: function(e){
+
+    remove: function(e){
         this.$('.task').removeClass('editing');
         $(this.model.TaskView.el).slideUp(function(){ $(this).remove(); });
         this.model.destroy();
     },
-    
+
     toggle_state: function(){
         this.model.toggle_state();
 
@@ -71,7 +70,7 @@ var TaskView = Backbone.View.extend({
         }));
 
         return this;
-    },
+    }
 });
 
 var ListView = Backbone.View.extend({
@@ -83,9 +82,17 @@ var ListView = Backbone.View.extend({
 
     initialize: function(){
         console.info('ListView.init', this.model);
-        
+
+        // same as in TaskView keep a reference from the model to the view.
+        // the check if a model already has a view assinged should not be
+        // necessary as a ListView is initialised only once per list per
+        // page load.
+        if(this.model.ListView) {
+            this.model.ListView.remove();
+        }
+
         this.model.ListView = this;
-        
+
         return this;
     },
 
@@ -106,7 +113,7 @@ var ListView = Backbone.View.extend({
         }));
 
         return this;
-    },
+    }
 });
 
 var ListsView = Backbone.View.extend({
@@ -173,7 +180,7 @@ var ListsView = Backbone.View.extend({
         this.collection.each(this.add_list, this);
 
         return this;
-    },
+    }
 });
 
 
@@ -219,7 +226,7 @@ var TasksView = Backbone.View.extend({
         if (e.keyCode && !is_enter){ return this; }
 
         var val_el = this.$('#tasks-list-rename'),
-            val = val_el.val() || 'Untitled'
+            val = val_el.val() || 'Untitled';
 
         val_el.val('');
 
@@ -273,11 +280,11 @@ var TasksView = Backbone.View.extend({
 
     add_task: function(task){
         console.info('TasksView.add_task', task.get('text'));
-        
+
         if( _.indexOf( task.get('in_lists'), this.current_list.id ) == -1 ) {
             return this;
         }
-        
+
         $(new TaskView({
             model: task
         }).render().el).prependTo( this.ol );

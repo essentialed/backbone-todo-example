@@ -434,7 +434,18 @@ float:right;
 /*=layout*/
 @media only screen and (min-width:480px){/* Style adjustments for viewports 480px and over go here */}
 @media only screen and (min-width:768px){/* Style adjustments for viewports 768px and over go here */
-
+#welcome {
+    padding:70px;
+}
+#primary:empty:after {
+    content:'<= Start by adding a list';
+    display:block;
+    position:absolute;
+    top:80px;
+    left:20%;
+    color:#999;
+    font-size:130%;
+}
 #tasks {
     border-left:1px solid #ccc;
 }
