@@ -79,7 +79,12 @@
     V.ProgressView = B.View.extend({
         el: '#main',
         template: _.template( $('#tmpl-progress').html() ),
-        
+        events: {
+            'click #start': 'start'
+        },
+        start: function(){
+            Q.MainView.start_quiz();
+        },
         render: function(){
             var qs = this.collection;
             
