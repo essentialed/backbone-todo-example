@@ -40,6 +40,7 @@ var Router = Backbone.Router.extend({
     },
 
     home: function(){
+        
         TasksView && TasksView.el.empty();
     },
 

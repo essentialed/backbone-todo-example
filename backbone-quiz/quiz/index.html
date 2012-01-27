@@ -26,12 +26,8 @@
 <div id="wrapper">
     <h1>Backbone Quiz Application</h1>
     <hr>
-    <div id="questions">
-        <div id="questions-inner" class="inner">
-            
-        </div>
+    <div id="main">
     </div>
-    
     <hr>
 </div>
 
@@ -51,16 +47,28 @@
             <input type="text" placeholder="Your Answer" value="<%= question.answer %>">
         </p>
         <p class="actions">
+            <% if (model.has_prev()) { %>
             <input type="button" value="Back" class="back">
-            <!-- <input type="button" value="Submit" class="submit primary"> -->
-            <input type="button" value="Skip" class="next">
+            <% } %>
+            
+            <% if (model.has_next()) { %>
+            <input type="button" value="Next" class="next">
+            <% } else { %>
+                <input type="button" value="End" class="end primary">             
+            <% } %>
         </p>
     </div>
 </script>
-
-<script type="text/html" charset="utf-8" id="tmpl-progess">
+<script type="text/html" charset="utf-8" id="tmpl-questions">
+<div id="questions">
+    <div id="questions-inner" class="inner">
+    
+    </div>
+</div>    
+</script>
+<script type="text/html" charset="utf-8" id="tmpl-progress">
     <div id="progress">
-        <div id="progress-inner" class="inner"></div>
+        <div id="progress-inner" class="inner">
         <h3 class="heading">Your Progress</h3>
         <dl>
             <dt><strong>Questions</strong></dt>
@@ -70,12 +78,13 @@
                 <p>Correct: <%= progress.correct_questions %></p>
             </dd>
         </dl>
+        </div>
     </div>
 </script>
 
 <!-- HTML Class  -->
 <script type="text/javascript">
-(function(){var bcn = document.body.parentNode.className;document.body.parentNode.className=bcn.replace(/no\-js/,'has-js');})();
+(function(){var bcn = document.body.parentNode;bcn.className=bcn.className.replace(/no\-js/,'has-js');})();
 </script>
 
 <script src="scripts/libs/jquery.min.js" type="text/javascript" charset="utf-8"></script>

@@ -8,28 +8,33 @@
     
     R.Router = B.Router.extend({
         routes: {
-            "/": "home",
-            "/questions/:id": "questions"
+            "/questions/:id": "questions",
+            "*home": "home",
         },
         
         initialize: function(){
             Q._debug_info && console.info('Router.initialize', this);
             
-            Q.initialize();
         },
         
         home: function(){
-            Q._debug_info && console.info('Router.home', this);
+            Q._debug_info && console.warn('Router.home', this);
             
+            $('#questions-inner').html('\
+                <input type="button" id="start-quiz" value="Start the Quiz">');
         },
 
         questions: function(id) {
             Q._debug_info && console.info('Router.questions', this);
             
+            Q.MainView.render( id );
         }
 
     });
-    new R.Router();
+
+    Q.Router = new R.Router();
+    Q.initialize();
     Backbone.history.start();
+    
 
 })();

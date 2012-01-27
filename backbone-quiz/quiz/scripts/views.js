@@ -11,6 +11,7 @@
             'click .choice span': 'choose_answer',
             'click .back': 'back',
             'click .next': 'next',
+            'click .end': 'end',
             'blur .answer input': 'type_answer'
         },
         
@@ -30,15 +31,19 @@
             
             Q.MainView.go_to('next');            
         },
-        
+        end: function(e){
+            e.stopPropagation();
+            e.preventDefault();
+
+            Q.ProgressView.render();
+        },
         type_answer: function(e){
             e.stopPropagation();
             
-            this.model.set({
+            this.model.save({
                 answer: $(e.target).val()
             });
         },
-        
         choose_answer: function(e){
             e.stopPropagation();
             e.preventDefault();
@@ -57,73 +62,98 @@
             choice.addClass(a).siblings('.'+a).removeClass(a);
             
         },
-        
         render: function(){
             Q._debug_info &&
                 console.info('View.QuestionView.render', this);
                             
             $(this.el).html( this.template({
-                question: this.model.toJSON()
+                question: this.model.toJSON(),
+                model: this.model
             }));
 
             return this;
         }
 
     });
-
+    
+    V.ProgressView = B.View.extend({
+        el: '#main',
+        template: _.template( $('#tmpl-progress').html() ),
+        
+        render: function(){
+            var qs = this.collection;
+            
+            $(this.el).html(
+                this.template({
+                    progress: {
+                        total_questions: qs.length,
+                        answered_questions: qs.filter(function(q) {
+                            return q.answered();
+                        }).length,
+                        correct_questions: qs.filter(function(q) {
+                            return q.is_correct();
+                        }).length
+                    }
+                })
+            );
+        }
+    });
+    
     V.AppView = B.View.extend({
-        el: '#wrapper',
-
+        el: '#main',
+        template: _.template($('#tmpl-questions').html()),
+        events: {
+            'click #start-quiz': 'start_quiz'
+        },
+        
         initialize: function(){
             Q._debug_info &&
                 console.info('View.AppView.initialize', this);
-            
-            this.render();
         },
-        
+        start_quiz: function(e){
+            Q.Router.navigate( this.collection.at(0).url(), true );
+        },
         go_to: function(direction){
+            var c = this.collection;
+            
             Q._debug_info &&
-                console.info('View.AppView.go_to', this.model);
-                  
-            var q = this._current_question.model,
-                c = this.collection,
-                i = c.indexOf( q ),
-                next = i + 1,
-                prev = i - 1;
+                console.info('View.AppView.go_to', direction);
             
             if(direction === 'next') {
-                q = c.at(next);
+                q = c.next();
                 if( q ) {
-                    this.model.save({
-                        current_question: q.id
-                    });
+                    Q.Router.navigate( q.url(), true );
                 }
             } else if(direction === 'prev') {
-                q = c.at(prev);
+                q = c.prev();
                 if( q ) {
-                    this.model.save({
-                        current_question: q.id
-                    });
+                    Q.Router.navigate( q.url(), true );
+                } else {
+                    Q.Router.navigate('/', true );
                 }
             }
             
-            this.render();
+            return this;
         },
-        
-        render: function(){
-            var current_question_id = this.model.get('current_question'),
-                current_question = this.collection.get(current_question_id);
-
+        render: function(id){
             Q._debug_info &&
-                 console.info('View.AppView.render', current_question_id);
+                 console.info('View.AppView.render', id);
+            
+            var current_question = this.collection.get(id);
             
             this._current_question = new V.QuestionView({
                 model: current_question
             });
             
-            this.$('#questions-inner').html(
+            this.collection.current_question = current_question;
+            
+            $(this.el).html(
+                this.template()
+            ).find('#questions-inner').append(
                 this._current_question.render().el
             );
+            
+            return this;
         }
     });
 

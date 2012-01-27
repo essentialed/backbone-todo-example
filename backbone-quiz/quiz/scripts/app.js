@@ -36,9 +36,7 @@ var console = (function(undefined) {
                         'text': 'Neither'
                     }
                 },
-                correct_answer: function() {
-                    return this.answer == 0;
-                }
+                correct_answer: '0'
                 
             },
             {
@@ -46,29 +44,24 @@ var console = (function(undefined) {
                 question: 'What\'s 4 + 2 ',
                 intro_text: '',
                 instructions: 'Type your answer in the box below',
-                correct_answer: function() {
-                    return this.answer == 6;
-                }
+                correct_answer: '6'
                 
             }
         ],
         
         initialize: function(){
-            if(this._initialized){ return this;}
+            if(this._initialized){ return this; }
             
             var q,
                 self = this,
-                qs = this._questions,
-                a = this.Account = new Q.Models.Account();
-            
-            a.fetch();
+                qs = this._questions;
             
             this._debug_info &&
                 console.info('BackboneQuiz.QuizApp.initialize', this);
             
             this._initialized = true;
             this._template = $('#templates');
-                        
+            
             q = this.Questions = new Q.Collections.Questions();
             
             q.fetch({
@@ -78,16 +71,18 @@ var console = (function(undefined) {
                     }
                     
                     self.start();
-                    
                 }
             });
             
+            return this;
         },
-        
         start: function(){
             this.MainView = new Q.Views.AppView({
-                collection: Q.Questions,
-                model: Q.Account
+                collection: this.Questions
+            });
+            
+            this.ProgressView = new Q.Views.ProgressView({
+                collection: this.Questions
             });
             
         }
