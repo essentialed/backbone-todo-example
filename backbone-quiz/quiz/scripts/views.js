@@ -35,7 +35,7 @@
             e.stopPropagation();
             e.preventDefault();
 
-            Q.ProgressView.render();
+            Q.Router.navigate( '/progress', true )
         },
         type_answer: function(e){
             e.stopPropagation();

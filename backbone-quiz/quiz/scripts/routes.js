@@ -9,6 +9,7 @@
     R.Router = B.Router.extend({
         routes: {
             "/questions/:id": "questions",
+            "/progress": "progress",
             "*home": "home",
         },
         
@@ -16,9 +17,11 @@
             Q._debug_info && console.info('Router.initialize', this);
             
         },
-        
+        progress: function(){
+            Q.ProgressView.render();
+        },
         home: function(){
-            Q._debug_info && console.warn('Router.home', this);
+            Q._debug_info && console.info('Router.home', this);
             
             $('#main').html('\
                 <input type="button" id="start-quiz" value="Start the Quiz">');
