@@ -20,7 +20,7 @@
         home: function(){
             Q._debug_info && console.warn('Router.home', this);
             
-            $('#questions-inner').html('\
+            $('#main').html('\
                 <input type="button" id="start-quiz" value="Start the Quiz">');
         },
 
