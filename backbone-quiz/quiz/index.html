@@ -1,0 +1,92 @@
+<!doctype html>
+<!--[if lt IE 7 ]><html lang="en"  xmlns:og="http://ogp.me/ns#" class="no-js ie ie6"><![endif]-->
+<!--[if IE 7 ]><html lang="en" xmlns:og="http://ogp.me/ns#" class="no-js  ie ie7"><![endif]-->
+<!--[if IE 8 ]><html lang="en" xmlns:og="http://ogp.me/ns#" class="no-js  ie ie8"><![endif]-->
+<!--[if IE 9 ]><html lang="en" xmlns:og="http://ogp.me/ns#" class="no-js  ie ie9"><![endif]-->
+<!--[if (gt IE 9)|!(IE)]><!--><html lang="en" xmlns:og="http://ogp.me/ns#" class="no-js"><!--<![endif]-->
+<head>
+	<meta charset="utf-8">
+	<title>backbone quiz application example</title>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	
+	<meta name="description" content="">
+	<meta name="keywords" content="">
+	<meta name="author" content="">
+	<meta name="copyright" content="">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico">
+    
+    <link rel="stylesheet" href="styles/reset.css" type="text/css" charset="utf-8">
+    <link rel="stylesheet" href="styles/theme.css" type="text/css" charset="utf-8">
+    <link rel="stylesheet" href="styles/structure.css" type="text/css" charset="utf-8">
+</head>
+<body>
+    
+<div id="wrapper">
+    <h1>Backbone Quiz Application</h1>
+    <hr>
+    <div id="questions">
+        <div id="questions-inner" class="inner">
+            
+        </div>
+    </div>
+    
+    <hr>
+</div>
+
+<script type="text/html" charset="utf-8" id="tmpl-question">
+    <div id="question" class="<%= question.type %>">
+        <h2 class="heading"><%= question.question %></h2>
+        <p class="description"><%= question.intro_text %></p>
+        <p class="instructions"><%= question.instructions %></p>
+        <ol class="choices">
+        <% for(var choice in question.choices) { %>
+            <li class="choice<%= (question.answer == choice) ? ' active' : '' %>" data-choice-id="<%= choice %>">
+                <span><%= question.choices[choice].text%></span>
+            </li>
+        <% } %>
+        </ol>
+        <p class="answer">
+            <input type="text" placeholder="Your Answer" value="<%= question.answer %>">
+        </p>
+        <p class="actions">
+            <input type="button" value="Back" class="back">
+            <!-- <input type="button" value="Submit" class="submit primary"> -->
+            <input type="button" value="Skip" class="next">
+        </p>
+    </div>
+</script>
+
+<script type="text/html" charset="utf-8" id="tmpl-progess">
+    <div id="progress">
+        <div id="progress-inner" class="inner"></div>
+        <h3 class="heading">Your Progress</h3>
+        <dl>
+            <dt><strong>Questions</strong></dt>
+            <dd>
+                <p>Total: <%= progress.total_questions %></p>
+                <p>Answered: <%= progress.answered_questions %></p>
+                <p>Correct: <%= progress.correct_questions %></p>
+            </dd>
+        </dl>
+    </div>
+</script>
+
+<!-- HTML Class  -->
+<script type="text/javascript">
+(function(){var bcn = document.body.parentNode.className;document.body.parentNode.className=bcn.replace(/no\-js/,'has-js');})();
+</script>
+
+<script src="scripts/libs/jquery.min.js" type="text/javascript" charset="utf-8"></script>
+<script src="scripts/libs/underscore-min.js" type="text/javascript" charset="utf-8"></script>
+<script src="scripts/libs/backbone-min.js" type="text/javascript" charset="utf-8"></script>
+<script src="scripts/libs/backbone-localstorage.js" type="text/javascript" charset="utf-8"></script>
+
+<script src="scripts/app.js" type="text/javascript" charset="utf-8"></script>
+<script src="scripts/models.js" type="text/javascript" charset="utf-8"></script>
+<script src="scripts/views.js" type="text/javascript" charset="utf-8"></script>
+<script src="scripts/routes.js" type="text/javascript" charset="utf-8"></script>
+
+</body>
+</html>

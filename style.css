@@ -438,7 +438,7 @@ float:right;
     padding:70px;
 }
 #primary:empty:after {
-    content:'<= Start by adding a list';
+    content:'<= Start by adding a list. Type its name in the box and hit enter.';
     display:block;
     position:absolute;
     top:80px;

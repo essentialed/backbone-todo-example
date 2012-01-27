@@ -1,0 +1,33 @@
+How to make quizzes with Backbone.
+
+Types of quizzes
+- Multiple choice
+-- Intro text or image, a question, and possible answers
+
+- Question & Answer
+-- Intro text or image, a question, and an input for answering
+
+Models
+- Account
+-- current_question
+
+- Question
+-- intro_text - String - intro text or image (html)
+-- question - String - the question
+-- choices - Object - possible answers, if multiple choice
+-- answer - String, Number - user's answer
+
+Collections
+- Questions
+
+Views
+- QuestionView
+- ProgressView
+- App
+
+File Structure
+- project_name/
+-- app_name/
+--- scripts/
+--- styles/
+--- images/

@@ -50,7 +50,7 @@ var Tasks = Backbone.Collection.extend({
     localStorage: new Store("tasks"),
     initialize: function(){
         console.info('Tasks.init', this.model);
-
+        
         this.bind('change', function(task) {
             task.TaskView && task.TaskView.render();
 
